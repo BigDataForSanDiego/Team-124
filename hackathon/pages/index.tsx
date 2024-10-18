@@ -1,290 +1,150 @@
-/* eslint-disable */
-import Head from "next/head";
-import React, { useEffect, useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import styles from "../styles/Home.module.css";
-import {
-  ICameraVideoTrack,
-  IRemoteVideoTrack,
-  IAgoraRTCClient,
-  IRemoteAudioTrack,
-} from "agora-rtc-sdk-ng";
+import React, { useEffect, useState } from 'react';
+import { Form, Button, Container } from 'react-bootstrap';
+import { useRouter } from 'next/router';
+import styles from './styles/Questionnaire.module.css';
 
-type TCreateRoomResponse = {
-  room: Room;
-  rtcToken: string;
-};
-
-type TGetRandomRoomResponse = {
-  rtcToken: string;
-  rooms: Room[];
-};
-
-type Room = {
-  _id: string;
-  status: string;
-};
-
-function createRoom(userId: string): Promise<TCreateRoomResponse> {
-  return fetch(`/api/rooms?userId=${userId}`, {
-    method: "POST",
-  }).then((response) => response.json());
+interface FormData {
+  firstName: string;
+  lastName: string;
+  dob: string;
+  country: string;
 }
 
-function getRandomRoom(userId: string): Promise<TGetRandomRoomResponse> {
-  return fetch(`/api/rooms?userId=${userId}`).then((response) =>
-    response.json()
-  );
-}
-
-function setRoomToWaiting(roomId: string) {
-  return fetch(`/api/rooms/${roomId}`, { method: "PUT" }).then((response) =>
-    response.json()
-  );
-}
-
-export const VideoPlayer = ({
-  videoTrack,
-  style,
-}: {
-  videoTrack: IRemoteVideoTrack | ICameraVideoTrack;
-  style: object;
-}) => {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const playerRef = ref.current;
-    if (!videoTrack || !playerRef) return;
-    videoTrack.play(playerRef);
-
-    return () => {
-      videoTrack.stop();
-    };
-  }, [videoTrack]);
-
-  return <div ref={ref} style={style}></div>;
-};
-
-async function connectToAgoraRtc(
-  roomId: string,
-  userId: string,
-  onVideoConnect: any,
-  onWebcamStart: any,
-  onAudioConnect: any,
-  token: string
-) {
-  const { default: AgoraRTC } = await import("agora-rtc-sdk-ng");
-
-  const client = AgoraRTC.createClient({
-    mode: "rtc",
-    codec: "vp8",
-  });
-
-  await client.join(
-    process.env.NEXT_PUBLIC_AGORA_APP_ID!,
-    roomId,
-    token,
-    userId
-  );
-
-  client.on("user-published", (themUser, mediaType) => {
-    client.subscribe(themUser, mediaType).then(() => {
-      if (mediaType === "video") {
-        onVideoConnect(themUser.videoTrack);
-      }
-      if (mediaType === "audio") {
-        onAudioConnect(themUser.audioTrack);
-        themUser.audioTrack?.play();
-      }
-    });
+const Questionnaire: React.FC = () => {
+  const currentYear = new Date().getFullYear();
+  const [formData, setFormData] = useState<FormData>({
+    firstName: '',
+    lastName: '',
+    dob: '',
+    country: '',
   });
   
-  const tracks = await AgoraRTC.createMicrophoneAndCameraTracks();
-  onWebcamStart(tracks[1]);
-  await client.publish(tracks);
-
-  return { tracks, client };
-}
-
-export default function Home() {
-  const [userId] = useState(parseInt(`${Math.random() * 1e6}`) + "");
-  const [room, setRoom] = useState<Room | undefined>();
-  const [themVideo, setThemVideo] = useState<IRemoteVideoTrack>();
-  const [myVideo, setMyVideo] = useState<ICameraVideoTrack>();
-  const [themAudio, setThemAudio] = useState<IRemoteAudioTrack>();
-  const [startDate, setStartDate] = useState(new Date());
-  const [showBookingModal, setShowBookingModal] = useState(false);
-  const rtcClientRef = useRef<IAgoraRTCClient>();
+  const router = useRouter();
 
   useEffect(() => {
-    const handleUnload = () => {
-      if (room) {
-        const data = JSON.stringify({ action: "leave", userId });
-        const blob = new Blob([data], { type: "application/json" });
-        navigator.sendBeacon(`/api/rooms/${room._id}`, blob);
-      }
-    };
-  
-    window.addEventListener("unload", handleUnload);
-  
-    return () => {
-      window.removeEventListener("unload", handleUnload);
-    };
-  }, [room, userId]);
-  
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+    // Load data from local storage if available
+    const savedData = localStorage.getItem('questionnaireData');
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  async function connectToARoom() {
-    setThemAudio(undefined);
-    setThemVideo(undefined);
-    setMyVideo(undefined);
-  
-    if (rtcClientRef.current) {
-      await rtcClientRef.current.leave();
-      rtcClientRef.current = undefined;
-    }
-  
-    if (room) {
-      // Leave the current room
-      await fetch(`/api/rooms/${room._id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ action: 'leave', userId }),
-      });
-      setRoom(undefined);
-    }
-  
-    const { rooms, rtcToken } = await getRandomRoom(userId);
-  
-    if (rooms.length > 0) {
-      const roomId = rooms[0]._id;
-      setRoom(rooms[0]);
-  
-      // Join the new room
-      await fetch(`/api/rooms/${roomId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ action: 'join', userId }),
-      });
-  
-      const { tracks, client } = await connectToAgoraRtc(
-        rooms[0]._id,
-        userId,
-        (themVideo: React.SetStateAction<IRemoteVideoTrack | undefined>) => setThemVideo(themVideo),
-        (myVideo: React.SetStateAction<ICameraVideoTrack | undefined>) => setMyVideo(myVideo),
-        (themAudio: React.SetStateAction<IRemoteAudioTrack | undefined>) => setThemAudio(themAudio),
-        rtcToken
-      );
-      rtcClientRef.current = client;
-    } else {
-      const { room, rtcToken } = await createRoom(userId);
-      setRoom(room);
-  
-      // Join the new room
-      await fetch(`/api/rooms/${room._id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ action: 'join', userId }),
-      });
-  
-      const { tracks, client } = await connectToAgoraRtc(
-        room._id,
-        userId,
-        (themVideo: React.SetStateAction<IRemoteVideoTrack | undefined>) => setThemVideo(themVideo),
-        (myVideo: React.SetStateAction<ICameraVideoTrack | undefined>) => setMyVideo(myVideo),
-        (themAudio: React.SetStateAction<IRemoteAudioTrack | undefined>) => setThemAudio(themAudio),
-        rtcToken
-      );
-      rtcClientRef.current = client;
-    }
-  }
-  
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const isChatting = room != null;
-  const handleBookClick = () => {
-    setShowBookingModal(true);
+    const dob = new Date(formData.dob);
+    const today = new Date();
+
+    if (dob > today) {
+      alert('Date of Birth cannot be in the future.');
+      return;
+    }
+
+    // Save form data to local storage
+    localStorage.setItem('questionnaireData', JSON.stringify(formData));
+
+    router.push('/experience');
   };
 
-  const handleConfirmBooking = () => {
-    alert(`Session booked for ${startDate.toString()}`);
-    setShowBookingModal(false);
+  const handleBack = () => {
+    // Clear form data in local storage
+    localStorage.removeItem('questionnaireData');
+    localStorage.removeItem('experienceData');
+    localStorage.removeItem('careData');
+
+
+
+    // Navigate to the home page
+    router.push('/');
   };
 
   return (
-    <>
-      <Head>
-        <title>Video Chat</title>
-        <meta name="description" content="Simple video chat app" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Container className={styles.container}>
+      <button className={styles.backButton} onClick={handleBack}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="#474747"
+          viewBox="0 0 24 24"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
 
-      <main className={styles.main}>
-        {isChatting ? (
-          <>
-            {/* {room._id} */}
-            <div className="video-panel">
-              <div className="video-stream" id="my-video">
-                {myVideo && (
-                  <VideoPlayer
-                    style={{ width: "100%", height: "100%" }}
-                    videoTrack={myVideo}
-                  />
-                )}
-              </div>
-              <div className="video-stream" id="them-video">
-                {themVideo && (
-                  <VideoPlayer
-                    style={{ width: "100%", height: "100%" }}
-                    videoTrack={themVideo}
-                  />
-                )}
-              </div>
-            </div>
-            <div className="buttons-container">
-              {/* <button id="book-button" onClick={() => alert("Booking confirmed!")}>Book</button> */}
-              <div>
-              <button id="book-button" onClick={handleBookClick}>
-                Book
-              </button>
-              
-              {showBookingModal && (
-                <div className="booking-modal">
-                  <h3>Select Date and Time for Your Session</h3>
-                  <DatePicker
-                    selected={startDate}
-                    // onChange={(date) => setStartDate(date)}
-                    showTimeSelect
-                    timeFormat="HH:mm"
-                    timeIntervals={30}
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                  />
-                  <div className="modal-buttons">
-                    <button onClick={handleConfirmBooking}>Confirm Booking</button>
-                    <button onClick={() => setShowBookingModal(false)}>Cancel</button>
-                  </div>
-                </div>
-              )}
-            </div>
-              <button id="skip-button" onClick={connectToARoom}>Skip</button>
-            </div>
-          </>
-        ) : (
-          <>
-            <button onClick={connectToARoom}>Connect</button>
-          </>
-        )}
-      </main>
-    </>
+      <h2 className={styles.title}>General Information</h2>
+      
+      {/* Progress Bar */}
+      <div className={styles.progressBarContainer}>
+        <div className={styles.progressBar} style={{ width: '20%' }} />
+      </div>
+
+      <Form onSubmit={handleSubmit}>
+        <div className={styles.header}>
+          First Name <span className={styles.asterisk}>*</span>
+        </div>
+        <Form.Control
+          type="text"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChange}
+          className={styles.input}
+          required
+        />
+
+        <div className={styles.header}>
+          Last Name <span className={styles.asterisk}>*</span>
+        </div>
+        <Form.Control
+          type="text"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleChange}
+          className={styles.input}
+          required
+        />
+
+        <div className={styles.header}>
+          Date of Birth <span className={styles.asterisk}>*</span>
+        </div>
+        <Form.Control
+          type="date"
+          name="dob"
+          value={formData.dob}
+          onChange={handleChange}
+          className={styles.input}
+          style={{ color: '#474747' }}
+          max={`${currentYear}-12-31`}
+          required
+        />
+
+        <div className={styles.header}>
+          Country <span className={styles.asterisk}>*</span>
+        </div>
+        <Form.Control
+          as="select"
+          name="country"
+          value={formData.country}
+          onChange={handleChange}
+          className={styles.input}
+          required
+        >
+          <option value="">Select your country</option>
+          <option value="United States">United States</option>
+          {/* Add more countries as needed */}
+        </Form.Control>
+
+        <Button type="submit" className={styles.continueButton}>
+          Continue
+        </Button>
+      </Form>
+    </Container>
   );
 };
+
+export default Questionnaire;

@@ -50,6 +50,9 @@ const Professional: React.FC = () => {
     router.push('/care'); // Update to the correct route for your Care page
   };
   
+  function handleClick() {
+    router.push('/video'); // Redirect to '/destination-page'
+  }
 
   return (
     <Container className={styles.container}>
@@ -91,8 +94,8 @@ const Professional: React.FC = () => {
           />
         ))}
 
-        <Button type="submit" className={styles.continueButton}>
-          Continue
+        <Button onClick={handleClick} type="submit" className={styles.continueButton}>
+          Submit
         </Button>
       </Form>
     </Container>
