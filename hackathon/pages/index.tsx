@@ -96,7 +96,7 @@ async function connectToAgoraRtc(
       }
     });
   });
-
+  
   const tracks = await AgoraRTC.createMicrophoneAndCameraTracks();
   onWebcamStart(tracks[1]);
   await client.publish(tracks);
@@ -112,6 +112,23 @@ export default function Home() {
   const [themAudio, setThemAudio] = useState<IRemoteAudioTrack>();
   const rtcClientRef = useRef<IAgoraRTCClient>();
 
+  
+  useEffect(() => {
+    const handleUnload = () => {
+      if (room) {
+        const data = JSON.stringify({ action: "leave", userId });
+        const blob = new Blob([data], { type: "application/json" });
+        navigator.sendBeacon(`/api/rooms/${room._id}`, blob);
+      }
+    };
+  
+    window.addEventListener("unload", handleUnload);
+  
+    return () => {
+      window.removeEventListener("unload", handleUnload);
+    };
+  }, [room, userId]);
+  
   async function connectToARoom() {
     setThemAudio(undefined);
     setThemVideo(undefined);
