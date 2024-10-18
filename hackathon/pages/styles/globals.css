@@ -1,0 +1,36 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f9fa; /* Light background */
+    color: #212529; /* Dark text color */
+    line-height: 1.6; /* Improved readability */
+  }
+  
+  a {
+    color: #397B8A; /* Link color */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  a:hover {
+    text-decoration: underline; /* Underline on hover */
+  }
+  
+  /* Utility classes */
+  .text-center {
+    text-align: center;
+  }
+  
+  .mt-20 {
+    margin-top: 20px;
+  }
+  
+  .p-10 {
+    padding: 10px;
+  }
+  
