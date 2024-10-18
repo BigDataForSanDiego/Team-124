@@ -1,0 +1,81 @@
+/* src/styles/Questionnaire.module.css */
+
+.container {
+  max-width: 380px; /* Width of the container */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white; /* White background for the form */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  position: relative; /* Added for absolute positioning of back button */
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #397B8A; /* Title color */
+  font-family: 'Montserrat', sans-serif; /* Font family */
+}
+
+.header {
+  font-family: 'Montserrat', sans-serif; /* Font family */
+  font-size: 18px; /* Font size */
+  color: #474747; /* Header color */
+  margin-top: 10px; /* Less spacing above the headers */
+  margin-bottom: 5px; /* Space between header and input */
+}
+
+.input {
+  background-color: #ECECEC; /* Light gray background for input boxes */
+  border-radius: 8px; /* Rounded corners with 8px radius */
+  border: 1px solid #ced4da; /* Light border color */
+  height: 48px; /* Height of the input box */
+  width: 100%; /* Full width */
+  padding: 0 10px; /* Add padding for better text alignment */
+  margin-bottom: 11px; /* Gap between inputs */
+  font-family: 'Montserrat', sans-serif; /* Montserrat font for input */
+  color: #474747; /* Font color for input */
+}
+
+/* Prevent background color change on focus */
+.input:focus,
+.input:valid {
+  background-color: #ECECEC; /* Keep the same background color */
+  border-color: #80bdff; /* Change border color on focus */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Add focus shadow */
+}
+
+
+.continueButton {
+  background-color: #397B8A; /* Continue button background color */
+  color: white; /* Continue button text color */
+  border: none; /* Remove default border */
+  padding: 10px 20px; /* Padding for the continue button */
+  border-radius: 5px; /* Rounded corners */
+  width: 100%; /* Full width for mobile compatibility */
+  font-family: 'Montserrat', sans-serif; /* Font family */
+  font-size: 16px; /* Adjust font size if needed */
+  margin-top: 114px; /* Set the gap above the continue button */
+}
+
+.asterisk {
+  color: red; /* Color for the asterisk */
+  margin-left: 5px; /* Space between label and asterisk */
+}
+
+.backButton {
+  background: none; /* No background */
+  border: none; /* No border */
+  cursor: pointer; /* Pointer cursor */
+  position: absolute; /* Position in the top left */
+  top: 20px; /* Adjust as needed */
+  left: 20px; /* Adjust as needed */
+  z-index: 10; /* Ensure it's above other content */
+}
+
+.backButton svg {
+  width: 24px; /* Size of the arrow */
+  height: 24px; /* Size of the arrow */
+  fill: #474747; /* Color of the arrow */
+}
