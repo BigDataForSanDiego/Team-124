@@ -98,7 +98,7 @@ const Care: React.FC = () => {
             checked={selectedOptions.includes(option)}
             onChange={() => handleOptionChange(option)}
             className={styles.checkbox} // Add custom style class here
-            custom // Use custom prop for Bootstrap styling
+            // custom // Use custom prop for Bootstrap styling
           />
         ))}
 

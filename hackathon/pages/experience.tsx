@@ -4,6 +4,9 @@ import { Form, Button, Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import styles from './styles/Questionnaire.module.css';
 
+// Define a custom type for the form control elements
+type FormControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
 const Experience: React.FC = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -21,7 +24,8 @@ const Experience: React.FC = () => {
     }
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  // Update the event type to React.ChangeEvent<FormControlElement>
+  const handleChange = (e: React.ChangeEvent<FormControlElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
@@ -92,6 +96,7 @@ const Experience: React.FC = () => {
           <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Non-binary">Non-binary</option>
+          <option value="Other">Other</option>
         </Form.Control>
 
         <div className={styles.header}>
@@ -109,6 +114,7 @@ const Experience: React.FC = () => {
           <option value="Heterosexual">Heterosexual</option>
           <option value="Homosexual">Homosexual</option>
           <option value="Bisexual">Bisexual</option>
+          <option value="Other">Other</option>
         </Form.Control>
 
         <div className={styles.header}>
@@ -126,9 +132,10 @@ const Experience: React.FC = () => {
           <option value="Single">Single</option>
           <option value="In a Relationship">In a Relationship</option>
           <option value="Married">Married</option>
+          <option value="Other">Other</option>
         </Form.Control>
 
-        <Button type="button" className={styles.continueButton} onClick={handleSubmit}>
+        <Button type="submit" className={styles.continueButton}>
           Continue
         </Button>
       </Form>

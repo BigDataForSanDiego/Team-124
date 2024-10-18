@@ -11,6 +11,9 @@ interface FormData {
   country: string;
 }
 
+// Define a custom type for form control elements
+type FormControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
 const Questionnaire: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const [formData, setFormData] = useState<FormData>({
@@ -30,7 +33,8 @@ const Questionnaire: React.FC = () => {
     }
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  // Update the event type to use the custom FormControlElement type
+  const handleChange = (e: React.ChangeEvent<FormControlElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
@@ -57,8 +61,6 @@ const Questionnaire: React.FC = () => {
     localStorage.removeItem('questionnaireData');
     localStorage.removeItem('experienceData');
     localStorage.removeItem('careData');
-
-
 
     // Navigate to the home page
     router.push('/');

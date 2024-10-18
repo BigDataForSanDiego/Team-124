@@ -91,7 +91,7 @@ const Professional: React.FC = () => {
             checked={selectedOptions.includes(option)}
             onChange={() => handleOptionChange(option)}
             className={styles.checkbox}
-            custom
+            // custom
           />
         ))}
 
