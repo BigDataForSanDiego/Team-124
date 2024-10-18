@@ -1,0 +1,183 @@
+/* src/styles/Questionnaire.module.css */
+
+.container {
+  max-width: 380px; 
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #397B8A; 
+}
+
+.header {
+  font-size: 18px; 
+  color: #474747; 
+  margin-top: 10px; 
+  margin-bottom: 5px; 
+}
+
+.input, .dropdown {
+  background-color: #ECECEC; 
+  border-radius: 8px; 
+  border: 1px solid #ced4da; 
+  height: 48px; 
+  width: 100%; 
+  padding: 0 10px; 
+  margin-bottom: 11px; 
+  color: #474747; 
+  font-family: 'Montserrat', sans-serif; 
+}
+
+.input:focus, .dropdown:focus {
+  border-color: #80bdff; 
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
+}
+
+.continueButton {
+  background-color: #397B8A; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  width: 100%; 
+  font-size: 16px; 
+  margin-top: 114px; 
+}
+
+.asterisk {
+  color: red; 
+  margin-left: 5px; 
+}
+
+.backButton {
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  position: absolute; 
+  top: 20px; 
+  left: 20px; 
+  z-index: 10; 
+}
+
+.backIcon {
+  width: 24px; 
+  height: 24px; 
+}
+
+.progressBarContainer {
+  width: 100%; 
+  background-color: #ececec; 
+  border-radius: 5px; 
+  height: 10px; 
+  margin-bottom: 20px; 
+}
+
+.progressBar {
+  height: 100%; 
+  background-color: #397B8A; 
+  border-radius: 5px; 
+}
+
+/* Styles for checkbox container */
+.checkbox {
+  display: flex; 
+  align-items: center; 
+  margin-bottom: 10px; 
+  margin-top: 10px;
+}
+
+/* Styles for checkbox label */
+.checkboxLabel {
+  margin-left: 8px; 
+  display: inline-flex; 
+  align-items: center; 
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Style for checkbox input */
+.checkbox input[type='checkbox'] {
+  width: 22px; 
+  height: 22px; 
+  border-radius: 4px; 
+  border: 2px solid #474747; 
+  cursor: pointer; 
+}
+
+.optionText {
+  font-size: 18px; 
+  font-family: 'Montserrat', sans-serif; 
+}
+
+.imageContainer {
+  position: relative;
+  width: 100px; 
+  height: 100px; 
+  margin: 20px auto; 
+  border-radius: 50%; 
+  overflow: hidden; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.circularImage {
+  border-radius: 50%; 
+}
+
+.wideContainer {
+  max-width: 1200px; 
+  margin: 0 auto; 
+}
+
+/* Styles for the steps with photos */
+.stepsContainer {
+  display: flex;
+  flex-direction: column; 
+}
+
+.step {
+  display: flex;
+  align-items: flex-start; 
+  margin-bottom: 20px; 
+}
+
+.photoPlaceholder {
+  width: 60px; 
+  height: 60px; 
+  border-radius: 50%; 
+  background-color: #e0e0e0; 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  margin-right: 15px; 
+  font-size: 12px; 
+}
+
+.stepDescription {
+  display: flex;
+  flex-direction: column; 
+}
+
+.stepTitle {
+  font-size: 20px; 
+  font-weight: bold; 
+  margin-bottom: 5px; 
+}
+
+.stepText {
+  font-size: 16px; 
+  margin: 0; 
+}
+
+.photoPlaceholderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}

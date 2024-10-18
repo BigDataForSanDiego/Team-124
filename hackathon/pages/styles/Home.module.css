@@ -1,0 +1,32 @@
+/* src/pages/styles/Home.module.css */
+
+.page {
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 8px; /* Soft rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  }
+  
+  .main {
+    color: #397B8A; /* Text color for main content */
+    font-family: 'Montserrat', sans-serif; /* Montserrat font */
+    text-align: center; /* Center the text */
+    margin-bottom: 20px;
+  }
+  
+  /* Include parent class for link styles */
+  .page a {
+    color: #397B8A; /* Link color */
+    text-decoration: none; /* Remove underline */
+    font-size: 18px; /* Increase font size for readability */
+    padding: 10px 15px; /* Add some padding */
+    border: 2px solid #397B8A; /* Border for the link */
+    border-radius: 5px; /* Rounded corners for the button-like link */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+  }
+  
+  .page a:hover {
+    background-color: #397B8A; /* Background color on hover */
+    color: #fff; /* Change text color on hover */
+  }
+  
