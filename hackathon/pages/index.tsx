@@ -116,44 +116,73 @@ export default function Home() {
     setThemAudio(undefined);
     setThemVideo(undefined);
     setMyVideo(undefined);
-
+  
     if (rtcClientRef.current) {
-      rtcClientRef.current.leave();
+      await rtcClientRef.current.leave();
+      rtcClientRef.current = undefined;
     }
-
-    const { rooms, rtcToken } = await getRandomRoom(userId);
-
+  
     if (room) {
-      setRoomToWaiting(room._id);
+      // Leave the current room
+      await fetch(`/api/rooms/${room._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'leave', userId }),
+      });
+      setRoom(undefined);
     }
-
+  
+    const { rooms, rtcToken } = await getRandomRoom(userId);
+  
     if (rooms.length > 0) {
+      const roomId = rooms[0]._id;
       setRoom(rooms[0]);
-
+  
+      // Join the new room
+      await fetch(`/api/rooms/${roomId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'join', userId }),
+      });
+  
       const { tracks, client } = await connectToAgoraRtc(
         rooms[0]._id,
         userId,
-        (themVideo: IRemoteVideoTrack) => setThemVideo(themVideo),
-        (myVideo: ICameraVideoTrack) => setMyVideo(myVideo),
-        (themAudio: IRemoteAudioTrack) => setThemAudio(themAudio),
+        (themVideo: React.SetStateAction<IRemoteVideoTrack | undefined>) => setThemVideo(themVideo),
+        (myVideo: React.SetStateAction<ICameraVideoTrack | undefined>) => setMyVideo(myVideo),
+        (themAudio: React.SetStateAction<IRemoteAudioTrack | undefined>) => setThemAudio(themAudio),
         rtcToken
       );
       rtcClientRef.current = client;
     } else {
       const { room, rtcToken } = await createRoom(userId);
       setRoom(room);
-
+  
+      // Join the new room
+      await fetch(`/api/rooms/${room._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'join', userId }),
+      });
+  
       const { tracks, client } = await connectToAgoraRtc(
         room._id,
         userId,
-        (themVideo: IRemoteVideoTrack) => setThemVideo(themVideo),
-        (myVideo: ICameraVideoTrack) => setMyVideo(myVideo),
-        (themAudio: IRemoteAudioTrack) => setThemAudio(themAudio),
+        (themVideo: React.SetStateAction<IRemoteVideoTrack | undefined>) => setThemVideo(themVideo),
+        (myVideo: React.SetStateAction<ICameraVideoTrack | undefined>) => setMyVideo(myVideo),
+        (themAudio: React.SetStateAction<IRemoteAudioTrack | undefined>) => setThemAudio(themAudio),
         rtcToken
       );
       rtcClientRef.current = client;
     }
   }
+  
 
   const isChatting = room != null;
 

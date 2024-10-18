@@ -35,12 +35,49 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { method, query } = req;
-  const roomId = query.roomId as string;
+    const { method, query, body } = req;
+    const roomId = query.roomId;
+    const userId = body.userId;
 
   await dbConnect();
 
   switch (method) {
+    case "PATCH":
+      const action = body.action; // 'join' or 'leave'
+      const room = await Room.findById(roomId);
+      if (!room) {
+        return res.status(404).json({ error: "Room not found" });
+      }
+
+      let connectedUsers = room.connectedUsers || [];
+
+      if (action === 'join') {
+        if (!connectedUsers.includes(userId)) {
+          connectedUsers.push(userId);
+        }
+      } else if (action === 'leave') {
+        connectedUsers = connectedUsers.filter((id: any) => id !== userId);
+      }
+
+      let status = room.status;
+
+      if (connectedUsers.length === 0) {
+        // Delete the room
+        await Room.findByIdAndDelete(roomId);
+        return res.status(200).json("Room deleted");
+      } else if (connectedUsers.length === 1) {
+        status = 'waiting';
+      } else if (connectedUsers.length === 2) {
+        status = 'active';
+      }
+
+      await Room.findByIdAndUpdate(roomId, {
+        connectedUsers,
+        status,
+      });
+
+      res.status(200).json({ status });
+      break;
     case "PUT":
       await Room.findByIdAndUpdate(roomId, {
         status: "waiting",
