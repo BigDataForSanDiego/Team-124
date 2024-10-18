@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import styles from './styles/Questionnaire.module.css';
-import BackIcon from './icons/back/back_icon.svg'; // Adjust path if necessary
 
 interface FormData {
   firstName: string;
@@ -19,8 +18,16 @@ const Questionnaire: React.FC = () => {
     dob: '',
     country: '',
   });
-
+  
   const router = useRouter();
+
+  useEffect(() => {
+    // Load data from local storage if available
+    const savedData = localStorage.getItem('questionnaireData');
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -38,7 +45,10 @@ const Questionnaire: React.FC = () => {
       return;
     }
 
-    router.push('/icebreaker');
+    // Save form data to local storage
+    localStorage.setItem('questionnaireData', JSON.stringify(formData));
+
+    router.push('/experience');
   };
 
   const handleBack = () => {
@@ -48,10 +58,24 @@ const Questionnaire: React.FC = () => {
   return (
     <Container className={styles.container}>
       <button className={styles.backButton} onClick={handleBack}>
-        <img src={BackIcon} alt="Back" width={24} height={24} />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="#474747"
+          viewBox="0 0 24 24"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
       </button>
 
       <h2 className={styles.title}>General Information</h2>
+      
+      {/* Progress Bar */}
+      <div className={styles.progressBarContainer}>
+        <div className={styles.progressBar} style={{ width: '20%' }} />
+      </div>
+
       <Form onSubmit={handleSubmit}>
         <div className={styles.header}>
           First Name <span className={styles.asterisk}>*</span>
@@ -95,15 +119,19 @@ const Questionnaire: React.FC = () => {
           Country <span className={styles.asterisk}>*</span>
         </div>
         <Form.Control
-          type="text"
+          as="select"
           name="country"
           value={formData.country}
           onChange={handleChange}
           className={styles.input}
           required
-        />
+        >
+          <option value="">Select your country</option>
+          <option value="United States">United States</option>
+          {/* Add more countries as needed */}
+        </Form.Control>
 
-        <Button type="button" className={styles.continueButton} onClick={handleSubmit}>
+        <Button type="submit" className={styles.continueButton}>
           Continue
         </Button>
       </Form>
