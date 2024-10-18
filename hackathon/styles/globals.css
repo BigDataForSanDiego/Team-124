@@ -106,6 +106,15 @@ a {
   }
 }
 
+button {
+  outline: none;
+  transition: 0.2s;
+  cursor: pointer;
+}
+button:hover {
+  opacity: 0.7;
+}
+
 .chat-window {
   display: flex;
   gap: 50px;

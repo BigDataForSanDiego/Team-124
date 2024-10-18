@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.css";
-import AgoraRTC, {
+import {
   ICameraVideoTrack,
   IRemoteVideoTrack,
   IAgoraRTCClient,
@@ -172,7 +172,7 @@ export default function Home() {
             {room._id}
             <button onClick={connectToARoom}>Next</button>
             <div className="video-panel">
-              <div className="video-stream">
+              <div className="video-stream" id="my-video">
                 {myVideo && (
                   <VideoPlayer
                     style={{ width: "100%", height: "100%" }}
@@ -180,7 +180,7 @@ export default function Home() {
                   />
                 )}
               </div>
-              <div className="video-stream">
+              <div className="video-stream" id="them-video">
                 {themVideo && (
                   <VideoPlayer
                     style={{ width: "100%", height: "100%" }}
@@ -192,7 +192,7 @@ export default function Home() {
           </>
         ) : (
           <>
-            <button onClick={connectToARoom}>Start Chatting</button>
+            <button onClick={connectToARoom}>Connect</button>
           </>
         )}
       </main>
