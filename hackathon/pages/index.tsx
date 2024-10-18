@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
+import DatePicker from "react-datepicker";
 import styles from "../styles/Home.module.css";
 import {
   ICameraVideoTrack,
@@ -110,22 +111,23 @@ export default function Home() {
   const [themVideo, setThemVideo] = useState<IRemoteVideoTrack>();
   const [myVideo, setMyVideo] = useState<ICameraVideoTrack>();
   const [themAudio, setThemAudio] = useState<IRemoteAudioTrack>();
-  const [timeLeft, setTimeLeft] = useState(600);
+  const [startDate, setStartDate] = useState(new Date());
+  const [showBookingModal, setShowBookingModal] = useState(false);
   const rtcClientRef = useRef<IAgoraRTCClient>();
 
-  useEffect(() => {
-    if (timeLeft <= 0 && room) {
-      // Handle session end logic here
-      alert("Session ended. Please choose to book or skip.");
-      setRoom(undefined);
-    }
+  // useEffect(() => {
+  //   if (timeLeft <= 0 && room) {
+  //     // Handle session end logic here
+  //     alert("Session ended. Please choose to book or skip.");
+  //     setRoom(undefined);
+  //   }
 
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-    }, 1000);
+  //   const timer = setInterval(() => {
+  //     setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, [timeLeft, room]);
+  //   return () => clearInterval(timer);
+  // }, [timeLeft, room]);
 
   useEffect(() => {
     const handleUnload = () => {
@@ -153,7 +155,6 @@ export default function Home() {
     setThemAudio(undefined);
     setThemVideo(undefined);
     setMyVideo(undefined);
-    setTimeLeft(600);
   
     if (rtcClientRef.current) {
       await rtcClientRef.current.leave();
@@ -223,6 +224,14 @@ export default function Home() {
   
 
   const isChatting = room != null;
+  const handleBookClick = () => {
+    setShowBookingModal(true);
+  };
+
+  const handleConfirmBooking = () => {
+    alert(`Session booked for ${startDate.toString()}`);
+    setShowBookingModal(false);
+  };
 
   return (
     <>
@@ -256,7 +265,30 @@ export default function Home() {
               </div>
             </div>
             <div className="buttons-container">
-              <button id="book-button" onClick={() => alert("Booking confirmed!")}>Book</button>
+              {/* <button id="book-button" onClick={() => alert("Booking confirmed!")}>Book</button> */}
+              <div>
+              <button id="book-button" onClick={handleBookClick}>
+                Book
+              </button>
+              
+              {showBookingModal && (
+                <div className="booking-modal">
+                  <h3>Select Date and Time for Your Session</h3>
+                  <DatePicker
+                    selected={startDate}
+                    // onChange={(date) => setStartDate(date)}
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    timeIntervals={30}
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                  />
+                  <div className="modal-buttons">
+                    <button onClick={handleConfirmBooking}>Confirm Booking</button>
+                    <button onClick={() => setShowBookingModal(false)}>Cancel</button>
+                  </div>
+                </div>
+              )}
+            </div>
               <button id="skip-button" onClick={connectToARoom}>Skip</button>
             </div>
           </>
