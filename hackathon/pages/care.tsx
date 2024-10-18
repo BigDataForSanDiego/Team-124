@@ -42,8 +42,9 @@ const Care: React.FC = () => {
     localStorage.setItem('careData', JSON.stringify(selectedOptions));
 
     console.log(allData);
-    // Optionally navigate to the next page if needed
-    // router.push('/nextPage');
+    
+    // Navigate to the Professional page
+    router.push('/professional');
   };
 
   const handleBack = () => {
@@ -74,7 +75,7 @@ const Care: React.FC = () => {
 
       <Form onSubmit={handleSubmit}>
         <div className={styles.header}>
-          ,<strong>What is wrong?</strong> 
+          <strong>What is wrong?</strong> 
         </div>
 
         {[
@@ -91,7 +92,7 @@ const Care: React.FC = () => {
             key={option}
             type="checkbox"
             label={
-                <span className={`${styles.optionText}`} style={{ marginLeft: '8px' }}>{option}</span>
+              <span className={`${styles.optionText}`} style={{ marginLeft: '8px' }}>{option}</span>
             }
             checked={selectedOptions.includes(option)}
             onChange={() => handleOptionChange(option)}
