@@ -40,7 +40,7 @@ const Experience: React.FC = () => {
   const handleBack = () => {
     // Save current form data to local storage
     localStorage.setItem('experienceData', JSON.stringify(formData));
-    router.push('/questionnaire');
+    router.push('/');
   };
 
   return (
