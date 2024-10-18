@@ -2,7 +2,7 @@ import withImages from 'next-images';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Add any other Next.js config options here
+  reactStrictMode: false,
 };
 
 export default withImages(nextConfig);
