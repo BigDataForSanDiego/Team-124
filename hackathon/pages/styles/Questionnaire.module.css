@@ -1,52 +1,75 @@
 /* src/styles/Questionnaire.module.css */
 
 .container {
-  max-width: 380px; /* Width of the container */
+  max-width: 380px; 
   margin: 0 auto;
   padding: 20px;
-  background-color: white; /* White background for the form */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  position: relative; /* Added for absolute positioning of back button */
+  background-color: white; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
 }
 
 .title {
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
-  color: #397B8A; /* Title color */
-  font-family: 'Montserrat', sans-serif; /* Font family */
+  color: #397B8A; 
 }
 
 .header {
-  font-family: 'Montserrat', sans-serif; /* Font family */
-  font-size: 18px; /* Font size */
-  color: #474747; /* Header color */
-  margin-top: 10px; /* Less spacing above the headers */
-  margin-bottom: 5px; /* Space between header and input */
+  font-size: 18px; 
+  color: #474747; 
+  margin-top: 10px; 
+  margin-bottom: 5px; 
 }
 
-.input {
-  background-color: #ECECEC; /* Light gray background for input boxes */
-  border-radius: 8px; /* Rounded corners with 8px radius */
-  border: 1px solid #ced4da; /* Light border color */
-  height: 48px; /* Height of the input box */
-  width: 100%; /* Full width */
-  padding: 0 10px; /* Add padding for better text alignment */
-  margin-bottom: 11px; /* Gap between inputs */
-  font-family: 'Montserrat', sans-serif; /* Montserrat font for input */
-  color: #474747; /* Font color for input */
+.input, .dropdown { /* Combine styles for input and dropdown */
+  background-color: #ECECEC; 
+  border-radius: 8px; 
+  border: 1px solid #ced4da; 
+  height: 48px; 
+  width: 100%; 
+  padding: 0 10px; 
+  margin-bottom: 11px; 
+  color: #474747; 
+  font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
 }
 
-/* Prevent background color change on focus */
-.input:focus,
-.input:valid {
-  background-color: #ECECEC; /* Keep the same background color */
-  border-color: #80bdff; /* Change border color on focus */
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Add focus shadow */
+.input:focus, .dropdown:focus {
+  border-color: #80bdff; 
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
 }
 
+.continueButton {
+  background-color: #397B8A; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  width: 100%; 
+  font-size: 16px; 
+  margin-top: 114px; 
+}
 
+.asterisk {
+  color: red; 
+  margin-left: 5px; 
+}
+
+.backButton {
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  position: absolute; 
+  top: 20px; 
+  left: 20px; 
+  z-index: 10; 
+}
+
+.backIcon {
+  width: 24px; 
+  height: 24px; 
+}
 .continueButton {
   background-color: #397B8A; /* Continue button background color */
   color: white; /* Continue button text color */
@@ -54,28 +77,54 @@
   padding: 10px 20px; /* Padding for the continue button */
   border-radius: 5px; /* Rounded corners */
   width: 100%; /* Full width for mobile compatibility */
-  font-family: 'Montserrat', sans-serif; /* Font family */
+  font-family: 'Montserrat', sans-serif; /* Montserrat font for button */
   font-size: 16px; /* Adjust font size if needed */
   margin-top: 114px; /* Set the gap above the continue button */
 }
 
-.asterisk {
-  color: red; /* Color for the asterisk */
-  margin-left: 5px; /* Space between label and asterisk */
+
+.progressBarContainer {
+  width: 100%; /* Full width of the container */
+  background-color: #ececec; /* Background color of the progress bar */
+  border-radius: 5px; /* Rounded corners */
+  height: 10px; /* Height of the progress bar */
+  margin-bottom: 20px; /* Space below the progress bar */
 }
 
-.backButton {
-  background: none; /* No background */
-  border: none; /* No border */
-  cursor: pointer; /* Pointer cursor */
-  position: absolute; /* Position in the top left */
-  top: 20px; /* Adjust as needed */
-  left: 20px; /* Adjust as needed */
-  z-index: 10; /* Ensure it's above other content */
+.progressBar {
+  height: 100%; /* Fill the height of the container */
+  background-color: #397B8A; /* Progress color */
+  border-radius: 5px; /* Rounded corners */
 }
 
-.backButton svg {
-  width: 24px; /* Size of the arrow */
-  height: 24px; /* Size of the arrow */
-  fill: #474747; /* Color of the arrow */
+/* src/styles/Questionnaire.module.css */
+
+/* Styles for the checkbox container */
+.checkbox {
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center align items */
+  margin-bottom: 10px; /* Space between each checkbox */
+  margin-top: 10px;
+}
+
+/* Styles for the checkbox label */
+.checkboxLabel {
+  margin-left: 8px; /* Space between checkbox and label */
+  display: inline-flex; /* Align text */
+  align-items: center; /* Center text vertically */
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Style for the checkbox input */
+.checkbox input[type='checkbox'] {
+  width: 22px; /* Size of the checkbox */
+  height: 22px; /* Size of the checkbox */
+  border-radius: 4px; /* Rounded corners */
+  border: 2px solid #474747; /* Border color */
+  cursor: pointer; /* Pointer on hover */
+}
+
+.optionText {
+  font-size: 18px; /* Adjust the size as needed */
+  font-family: 'Montserrat', sans-serif; /* Ensure it's using Montserrat */
 }
