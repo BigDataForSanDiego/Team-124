@@ -23,7 +23,7 @@
   margin-bottom: 5px; 
 }
 
-.input, .dropdown { /* Combine styles for input and dropdown */
+.input, .dropdown {
   background-color: #ECECEC; 
   border-radius: 8px; 
   border: 1px solid #ced4da; 
@@ -32,7 +32,7 @@
   padding: 0 10px; 
   margin-bottom: 11px; 
   color: #474747; 
-  font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
+  font-family: 'Montserrat', sans-serif; 
 }
 
 .input:focus, .dropdown:focus {
@@ -70,61 +70,114 @@
   width: 24px; 
   height: 24px; 
 }
-.continueButton {
-  background-color: #397B8A; /* Continue button background color */
-  color: white; /* Continue button text color */
-  border: none; /* Remove default border */
-  padding: 10px 20px; /* Padding for the continue button */
-  border-radius: 5px; /* Rounded corners */
-  width: 100%; /* Full width for mobile compatibility */
-  font-family: 'Montserrat', sans-serif; /* Montserrat font for button */
-  font-size: 16px; /* Adjust font size if needed */
-  margin-top: 114px; /* Set the gap above the continue button */
-}
-
 
 .progressBarContainer {
-  width: 100%; /* Full width of the container */
-  background-color: #ececec; /* Background color of the progress bar */
-  border-radius: 5px; /* Rounded corners */
-  height: 10px; /* Height of the progress bar */
-  margin-bottom: 20px; /* Space below the progress bar */
+  width: 100%; 
+  background-color: #ececec; 
+  border-radius: 5px; 
+  height: 10px; 
+  margin-bottom: 20px; 
 }
 
 .progressBar {
-  height: 100%; /* Fill the height of the container */
-  background-color: #397B8A; /* Progress color */
-  border-radius: 5px; /* Rounded corners */
+  height: 100%; 
+  background-color: #397B8A; 
+  border-radius: 5px; 
 }
 
-/* src/styles/Questionnaire.module.css */
-
-/* Styles for the checkbox container */
+/* Styles for checkbox container */
 .checkbox {
-  display: flex; /* Use flexbox for alignment */
-  align-items: center; /* Center align items */
-  margin-bottom: 10px; /* Space between each checkbox */
+  display: flex; 
+  align-items: center; 
+  margin-bottom: 10px; 
   margin-top: 10px;
 }
 
-/* Styles for the checkbox label */
+/* Styles for checkbox label */
 .checkboxLabel {
-  margin-left: 8px; /* Space between checkbox and label */
-  display: inline-flex; /* Align text */
-  align-items: center; /* Center text vertically */
+  margin-left: 8px; 
+  display: inline-flex; 
+  align-items: center; 
   font-family: 'Montserrat', sans-serif;
 }
 
-/* Style for the checkbox input */
+/* Style for checkbox input */
 .checkbox input[type='checkbox'] {
-  width: 22px; /* Size of the checkbox */
-  height: 22px; /* Size of the checkbox */
-  border-radius: 4px; /* Rounded corners */
-  border: 2px solid #474747; /* Border color */
-  cursor: pointer; /* Pointer on hover */
+  width: 22px; 
+  height: 22px; 
+  border-radius: 4px; 
+  border: 2px solid #474747; 
+  cursor: pointer; 
 }
 
 .optionText {
-  font-size: 18px; /* Adjust the size as needed */
-  font-family: 'Montserrat', sans-serif; /* Ensure it's using Montserrat */
+  font-size: 18px; 
+  font-family: 'Montserrat', sans-serif; 
+}
+
+.imageContainer {
+  position: relative;
+  width: 100px; 
+  height: 100px; 
+  margin: 20px auto; 
+  border-radius: 50%; 
+  overflow: hidden; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.circularImage {
+  border-radius: 50%; 
+}
+
+.wideContainer {
+  max-width: 1200px; 
+  margin: 0 auto; 
+}
+
+/* Styles for the steps with photos */
+.stepsContainer {
+  display: flex;
+  flex-direction: column; 
+}
+
+.step {
+  display: flex;
+  align-items: flex-start; 
+  margin-bottom: 20px; 
+}
+
+.photoPlaceholder {
+  width: 60px; 
+  height: 60px; 
+  border-radius: 50%; 
+  background-color: #e0e0e0; 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  margin-right: 15px; 
+  font-size: 12px; 
+}
+
+.stepDescription {
+  display: flex;
+  flex-direction: column; 
+}
+
+.stepTitle {
+  font-size: 20px; 
+  font-weight: bold; 
+  margin-bottom: 5px; 
+}
+
+.stepText {
+  font-size: 16px; 
+  margin: 0; 
+}
+
+.photoPlaceholderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 20px 0;
 }
