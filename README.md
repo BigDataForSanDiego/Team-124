@@ -44,6 +44,6 @@
 #### Team Members 
 1. [Noah Bakayou](https://github.com/NoahBakayou)
 2. [Emilio Lopez](https://github.com/emilioece)
-3. [Fadi Yousif](https://github.com/fadielia)
+3. [Fadi Elia](https://github.com/fadielia)
 4. [Steven Hsu](https://github.com/Steven-Hsu1)
 
