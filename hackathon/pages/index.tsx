@@ -116,20 +116,6 @@ export default function Home() {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const rtcClientRef = useRef<IAgoraRTCClient>();
 
-  // useEffect(() => {
-  //   if (timeLeft <= 0 && room) {
-  //     // Handle session end logic here
-  //     alert("Session ended. Please choose to book or skip.");
-  //     setRoom(undefined);
-  //   }
-
-  //   const timer = setInterval(() => {
-  //     setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-  //   }, 1000);
-
-  //   return () => clearInterval(timer);
-  // }, [timeLeft, room]);
-
   useEffect(() => {
     const handleUnload = () => {
       if (room) {
@@ -302,5 +288,3 @@ export default function Home() {
     </>
   );
 };
-
-export default Home;
