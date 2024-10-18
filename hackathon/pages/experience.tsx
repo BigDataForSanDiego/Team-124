@@ -41,7 +41,15 @@ const Experience: React.FC = () => {
   return (
     <Container className={styles.container}>
       <button className={styles.backButton} onClick={handleBack}>
-        &lt; Back
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="#474747"
+          viewBox="0 0 24 24"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
       </button>
 
       <h2 className={styles.title}>Personalized Experience</h2>
