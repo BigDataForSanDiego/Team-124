@@ -52,7 +52,15 @@ const Questionnaire: React.FC = () => {
   };
 
   const handleBack = () => {
-    router.back();
+    // Clear form data in local storage
+    localStorage.removeItem('questionnaireData');
+    localStorage.removeItem('experienceData');
+    localStorage.removeItem('careData');
+
+
+
+    // Navigate to the home page
+    router.push('/');
   };
 
   return (
