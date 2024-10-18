@@ -110,9 +110,23 @@ export default function Home() {
   const [themVideo, setThemVideo] = useState<IRemoteVideoTrack>();
   const [myVideo, setMyVideo] = useState<ICameraVideoTrack>();
   const [themAudio, setThemAudio] = useState<IRemoteAudioTrack>();
+  const [timeLeft, setTimeLeft] = useState(600);
   const rtcClientRef = useRef<IAgoraRTCClient>();
 
-  
+  useEffect(() => {
+    if (timeLeft <= 0 && room) {
+      // Handle session end logic here
+      alert("Session ended. Please choose to book or skip.");
+      setRoom(undefined);
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, room]);
+
   useEffect(() => {
     const handleUnload = () => {
       if (room) {
@@ -129,10 +143,17 @@ export default function Home() {
     };
   }, [room, userId]);
   
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+
   async function connectToARoom() {
     setThemAudio(undefined);
     setThemVideo(undefined);
     setMyVideo(undefined);
+    setTimeLeft(600);
   
     if (rtcClientRef.current) {
       await rtcClientRef.current.leave();
@@ -215,8 +236,7 @@ export default function Home() {
       <main className={styles.main}>
         {isChatting ? (
           <>
-            {room._id}
-            <button onClick={connectToARoom}>Next</button>
+            {/* {room._id} */}
             <div className="video-panel">
               <div className="video-stream" id="my-video">
                 {myVideo && (
@@ -234,6 +254,10 @@ export default function Home() {
                   />
                 )}
               </div>
+            </div>
+            <div className="buttons-container">
+              <button id="book-button" onClick={() => alert("Booking confirmed!")}>Book</button>
+              <button id="skip-button" onClick={connectToARoom}>Skip</button>
             </div>
           </>
         ) : (
