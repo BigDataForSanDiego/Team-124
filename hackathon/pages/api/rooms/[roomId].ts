@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../../lib/dbConnect";
 import { RtcTokenBuilder, RtcRole } from "agora-access-token";
-import { RtmTokenBuilder, RtmRole } from "agora-access-token";
 import Room from "../../../models/Room";
 
 type Room = {
