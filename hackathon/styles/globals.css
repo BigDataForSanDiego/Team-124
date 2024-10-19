@@ -146,7 +146,61 @@ button:hover {
   background-color: #e0e0e0;
   color: #000;
 }
-/* 
+/* Main container styling */
+.main-video-page {
+  position: relative;
+  height: 100vh; /* Full viewport height */
+  width: 100vw;
+  font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
+  background-color: #f5f5f5; /* Optional background color */
+}
+
+/* Styling for the heading */
+#waiting-room {
+  position: relative;
+  /* top: 10%; Pushes the heading down to approximately the top third */
+  width: 100%;
+  text-align: center;
+  font-size: 2.5rem; /* Adjust font size as needed */
+  color: #333; /* Optional text color */
+}
+
+/* Styling for the button */
+#connect-btn {
+  position: relative;
+  top: 40%; /* Positions the button towards the bottom third */
+  display: block;
+  margin: 0 auto; /* Centers the button horizontally */
+  padding: 10px 20px; /* Adjust padding for desired size */
+  font-size: 1rem; /* Adjust font size for readability */
+  color: #fff; /* Button text color */
+  background-color: #397b8a; /* Button background color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+  width: 200px; /* Fixed width to prevent the button from being too large */
+  text-align: center;
+}
+
+/* Button hover effect */
+#connect-btn:hover {
+  background-color: #397b8a; /* Darker shade on hover */
+}
+
+/* Responsive adjustments (optional) */
+@media (max-width: 600px) {
+  #waiting-room {
+    font-size: 2rem;
+  }
+
+  #connect-btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    width: 130px;
+  }
+}
+
 .booking-modal {
   position: fixed;
   top: 50%;
@@ -177,4 +231,4 @@ button:hover {
 .modal-buttons button:hover {
   background-color: #e0e0e0;
 }
- */
+

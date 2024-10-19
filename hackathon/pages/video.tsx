@@ -332,7 +332,12 @@ export default function Home() {
           </>
         ) : (
           <>
-            <button onClick={connectToARoom}>Connect</button>
+            <div className="main-video-page">
+              <h2 id="waiting-room"> 
+                Meet Therapist
+              </h2>
+              <button id="connect-btn" onClick={connectToARoom}>Connect</button>
+            </div>
           </>
         )}
       </main>
