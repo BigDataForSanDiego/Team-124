@@ -115,7 +115,7 @@ export default function Home() {
   const [startDate, setStartDate] = useState(new Date());
   const [showBookingModal, setShowBookingModal] = useState(false);
   const rtcClientRef = useRef<IAgoraRTCClient>();
-  const [timeRemaining, setTimeRemaining] = useState(600);
+  const [timeElapsed, setTimeElapsed] = useState(0);
 
   const isChatting = room != null;
 
@@ -145,17 +145,17 @@ export default function Home() {
     let timerInterval: NodeJS.Timeout;
 
     if (isChatting) {
-      setTimeRemaining(600); // Reset the timer to 10 minutes when chatting starts
+      setTimeElapsed(0); // Reset the timer to 0 when chatting starts
 
       timerInterval = setInterval(() => {
-        setTimeRemaining((prevTime) => {
-          if (prevTime <= 1) {
+        setTimeElapsed((prevTime) => {
+          if (prevTime >= 599) { // 599 so that next increment is 600
             clearInterval(timerInterval);
-            // Close the room when time reaches 0
+            // Close the room when time reaches 10 minutes
             closeRoom();
-            return 0;
+            return prevTime + 1;
           }
-          return prevTime - 1;
+          return prevTime + 1;
         });
       }, 1000);
     }
@@ -325,7 +325,7 @@ export default function Home() {
                 )}
               </div>
               <div className="timer">
-                {formatTime(timeRemaining)}
+                {formatTime(timeElapsed)}
               </div>
               <button id="skip-button" onClick={connectToARoom}>Skip</button>
             </div>
