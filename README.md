@@ -7,6 +7,7 @@
 #### Your team's hackathon idea in One sentence:
 ##### `TalkToATherapist: Providing more accessible, equitable, and inclusive care to those facing mental health challenges through an app with an improved patient-provider matching system.`
 
+Link to app: [https://talktoatherapist.vercel.app/](https://talktoatherapist.vercel.app/)
 
 #### A visual
 ![Connect](./imgs/Connect.png)
@@ -39,7 +40,7 @@
 > How can we leverage big (geospatial) data analytics and AI to improve access to resources that mitigate the impact of environmental factors, i.e. pollution, on health disparities?
 
 
-#### Team Coordinator GitHub Username: [Steven Hsu](https://github.com/Steven-Hsu1)
+#### Team Coordinator GitHub Username: [Noah Bakayou](https://github.com/NoahBakayou)
 
 #### Team Members 
 1. [Noah Bakayou](https://github.com/NoahBakayou)
