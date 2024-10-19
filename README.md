@@ -10,7 +10,7 @@
 Link to app: [https://talktoatherapist.vercel.app/](https://talktoatherapist.vercel.app/)
 
 #### A visual
-![Connect](./imgs/Connect.png)
+![Figma](./imgs/figma.png)
 ![Wireframe](./imgs/wireframe.png)
 <!--
 #### Theme: Enhancing Healthcareâ€™s Digital Front Door
