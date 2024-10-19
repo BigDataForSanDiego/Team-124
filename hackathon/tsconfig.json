@@ -6,6 +6,7 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "noImplicitAny": false,
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -16,6 +17,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/lib/dbConnect.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/dbConnect.js"],
   "exclude": ["node_modules"]
 }
