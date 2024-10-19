@@ -41,15 +41,15 @@ const Professional: React.FC = () => {
     localStorage.setItem('professionalData', JSON.stringify(selectedOptions));
 
     console.log(allData);
-    // Optionally navigate to the next page if needed
-    // router.push('/nextPage');
+    
+    // Navigate to the Icebreaker page after submitting
+    router.push('/icebreaker');
   };
 
   const handleBack = () => {
     localStorage.setItem('professionalData', JSON.stringify(selectedOptions));
-    router.push('/care'); // Update to the correct route for your Care page
+    router.push('/care'); // Navigate back to Icebreaker page
   };
-  
 
   return (
     <Container className={styles.container}>
