@@ -98,7 +98,7 @@ async function connectToAgoraRtc(
       }
     });
   });
-  
+
   const tracks = await AgoraRTC.createMicrophoneAndCameraTracks();
   onWebcamStart(tracks[1]);
   await client.publish(tracks);
@@ -115,6 +115,9 @@ export default function Home() {
   const [startDate, setStartDate] = useState(new Date());
   const [showBookingModal, setShowBookingModal] = useState(false);
   const rtcClientRef = useRef<IAgoraRTCClient>();
+  const [timeRemaining, setTimeRemaining] = useState(600);
+
+  const isChatting = room != null;
 
   useEffect(() => {
     const handleUnload = () => {
@@ -124,30 +127,78 @@ export default function Home() {
         navigator.sendBeacon(`/api/rooms/${room._id}`, blob);
       }
     };
-  
+
     window.addEventListener("unload", handleUnload);
-  
+
     return () => {
       window.removeEventListener("unload", handleUnload);
     };
   }, [room, userId]);
-  
+
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
+  useEffect(() => {
+    let timerInterval: NodeJS.Timeout;
+
+    if (isChatting) {
+      setTimeRemaining(600); // Reset the timer to 10 minutes when chatting starts
+
+      timerInterval = setInterval(() => {
+        setTimeRemaining((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timerInterval);
+            // Close the room when time reaches 0
+            closeRoom();
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(timerInterval);
+    };
+  }, [isChatting]);
+
+  async function closeRoom() {
+    if (room) {
+      // Leave the RTC client
+      if (rtcClientRef.current) {
+        await rtcClientRef.current.leave();
+        rtcClientRef.current = undefined;
+      }
+
+      // Leave the room on the server
+      await fetch(`/api/rooms/${room._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'leave', userId }),
+      });
+
+      setRoom(undefined);
+      setThemAudio(undefined);
+      setThemVideo(undefined);
+      setMyVideo(undefined);
+    }
+  }
+
   async function connectToARoom() {
     setThemAudio(undefined);
     setThemVideo(undefined);
     setMyVideo(undefined);
-  
+
     if (rtcClientRef.current) {
       await rtcClientRef.current.leave();
       rtcClientRef.current = undefined;
     }
-  
+
     if (room) {
       // Leave the current room
       await fetch(`/api/rooms/${room._id}`, {
@@ -159,13 +210,13 @@ export default function Home() {
       });
       setRoom(undefined);
     }
-  
+
     const { rooms, rtcToken } = await getRandomRoom(userId);
-  
+
     if (rooms.length > 0) {
       const roomId = rooms[0]._id;
       setRoom(rooms[0]);
-  
+
       // Join the new room
       await fetch(`/api/rooms/${roomId}`, {
         method: 'PATCH',
@@ -174,7 +225,7 @@ export default function Home() {
         },
         body: JSON.stringify({ action: 'join', userId }),
       });
-  
+
       const { tracks, client } = await connectToAgoraRtc(
         rooms[0]._id,
         userId,
@@ -187,7 +238,7 @@ export default function Home() {
     } else {
       const { room, rtcToken } = await createRoom(userId);
       setRoom(room);
-  
+
       // Join the new room
       await fetch(`/api/rooms/${room._id}`, {
         method: 'PATCH',
@@ -196,7 +247,7 @@ export default function Home() {
         },
         body: JSON.stringify({ action: 'join', userId }),
       });
-  
+
       const { tracks, client } = await connectToAgoraRtc(
         room._id,
         userId,
@@ -208,9 +259,7 @@ export default function Home() {
       rtcClientRef.current = client;
     }
   }
-  
 
-  const isChatting = room != null;
   const handleBookClick = () => {
     setShowBookingModal(true);
   };
@@ -252,30 +301,32 @@ export default function Home() {
               </div>
             </div>
             <div className="buttons-container">
-              {/* <button id="book-button" onClick={() => alert("Booking confirmed!")}>Book</button> */}
               <div>
-              <button id="book-button" onClick={handleBookClick}>
-                Book
-              </button>
-              
-              {showBookingModal && (
-                <div className="booking-modal">
-                  <h3>Select Date and Time for Your Session</h3>
-                  <DatePicker
-                    selected={startDate}
-                    // onChange={(date) => setStartDate(date)}
-                    showTimeSelect
-                    timeFormat="HH:mm"
-                    timeIntervals={30}
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                  />
-                  <div className="modal-buttons">
-                    <button onClick={handleConfirmBooking}>Confirm Booking</button>
-                    <button onClick={() => setShowBookingModal(false)}>Cancel</button>
+                <button id="book-button" onClick={handleBookClick}>
+                  Book
+                </button>
+
+                {showBookingModal && (
+                  <div className="booking-modal">
+                    <h3>Select Date and Time for Your Session</h3>
+                    <DatePicker
+                      selected={startDate}
+                      // onChange={(date: Date) => setStartDate(date)}
+                      showTimeSelect
+                      timeFormat="HH:mm"
+                      timeIntervals={30}
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                    />
+                    <div className="modal-buttons">
+                      <button onClick={handleConfirmBooking}>Confirm Booking</button>
+                      <button onClick={() => setShowBookingModal(false)}>Cancel</button>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+              <div className="timer">
+                {formatTime(timeRemaining)}
+              </div>
               <button id="skip-button" onClick={connectToARoom}>Skip</button>
             </div>
           </>
@@ -287,4 +338,4 @@ export default function Home() {
       </main>
     </>
   );
-};
+}
