@@ -1,15 +1,15 @@
 ### 2025 BIG DATA HACKATHON PROPOSAL FORM
 
-#### Team Number: `YOUR TEAM NUMBER HERE`  
+#### Team Number: 124  
 
-#### Team Name: `YOUR TEAM NAME HERE`    
+#### Team Name: SPARKS 4 CHANGE  
 
-#### Team Coordinator GitHub Username: `YOUR TEAM COORDINATOR GITHUB USERNAME HERE`
+#### Team Coordinator GitHub Username: swasthi-raj
 
-#### Team Members `YOUR TEAM MEMBERS NAME & GITHUB USERNAME HERE`
+#### Team Members Aneesha Prasad (aprasad6369-stack), Sudesna Das Rochi(Sudesna-Das-Rochi), Sahitya Kotla
 
 #### Your teamâ€™s hackathon idea in One sentence:
-##### `YOUR ONE SENTENCE HERE`
+##### A web platform connecting local businesses with employment opportunities for homeless individuals.Creating employment opportunities for homeless individuals through a dedicated local job-matching platform can bridge the gap between compassionate employers and those seeking a path to stability.
 
 #### A visual
 ![bigdatahackathon4sd](https://github.com/BigDataForSanDiego/bigdataforsandiego.github.io/blob/main/images/big_data_2025_clip.png?raw=true "Big Data Hackathon for San Diego 2025")
@@ -24,7 +24,7 @@
 - [ ] Health and Mental Wellness Support
 > - Tools to provide remote mental health support, connect to mobile healthcare providers, or manage chronic conditions common in homeless populations using mobile devices.
 > - Question: How can we create tools or mobile applications that deliver remote mental health care, help manage chronic health conditions, or connect unhoused individuals with trusted health professionals?
-- [ ] Housing and Employment Pathways
+- [x] Housing and Employment Pathways
 > - Web platforms that connect homeless individuals to affordable housing opportunities, job training programs, or employment resources.
 > - Question: What digital web platforms or systems can help individuals experiencing homelessness navigate the path toward stable housing and employment, including skills training, job placement, and housing referrals? 
 - [ ] Safety and Community Engagement
